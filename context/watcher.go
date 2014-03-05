@@ -12,6 +12,7 @@ import (
 // Watcher represents a file watcher.
 type Watcher struct {
 	Extension string   `json:"extension"`
+	Excludes  []string `json:"excludes"`
 	Commands  []string `json:"commands"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
@@ -42,6 +43,7 @@ func (w *Watcher) readDir(dirname string, init bool) error {
 			if err := w.readDir(dirname+"/"+name, init); err != nil {
 				return err
 			}
+		case w.exclude(name):
 		case strings.HasSuffix(name, "."+w.Extension):
 			_, prs := w.Targets[dirname]
 			if !prs {
@@ -94,4 +96,14 @@ func (w *Watcher) sendJob(dirname, name, action string) {
 // Printf calls log.Printf.
 func (w *Watcher) Printf(format string, v ...interface{}) {
 	log.Printf("["+w.Extension+" wathcer] "+format, v...)
+}
+
+// exclude returns true if the file should be not checked.
+func (w *Watcher) exclude(filename string) bool {
+	for _, excludeFilename := range w.Excludes {
+		if filename == excludeFilename {
+			return true
+		}
+	}
+	return false
 }
