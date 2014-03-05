@@ -96,7 +96,7 @@ func (w *Watcher) sendJob(dirname, name, action string) {
 
 // Printf calls log.Printf.
 func (w *Watcher) Printf(format string, v ...interface{}) {
-	log.Printf("["+w.Extension+" wathcer] "+format, v...)
+	log.Printf("["+w.Extension+" watcher] "+format, v...)
 }
 
 // exclude returns true if the file should be not checked.
