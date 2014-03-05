@@ -105,4 +105,10 @@ $ goat
 2014/03/06 01:22:04 [styl wathcer] Watching...
 ```
 
-Goat launches watcher processes.
+Goat launches watcher processes defined on `goat.json` file.
+
+Default interval time of each watcher's execution process is 500ms. You can change this interval time by specifying -i flag. The following example shows a command which sets an interval time to 1000ms:
+
+```sh
+$ goat -i 1000
+```
