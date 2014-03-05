@@ -28,3 +28,55 @@ $ go get github.com/yosssi/goat/...
 * [Mac OS X(32bit)](https://s3-ap-northeast-1.amazonaws.com/yosssi/goat/darwin_386/goat)
 * [Windows(64bit)](https://s3-ap-northeast-1.amazonaws.com/yosssi/goat/windows_amd64/goat.exe)
 * [Windows(32bit)](https://s3-ap-northeast-1.amazonaws.com/yosssi/goat/windows_386/goat.exe)
+
+## Configuration file
+
+To run goat, you have to create a configuration file named `goat.json` on in your project root directory. This file looks like the following:
+
+```json
+{
+  "watchers": [
+    {
+      "extension": "go",
+      "tasks": [
+        {
+          "command": "make rerun",
+          "nowait": true
+        }
+      ]
+    },
+    {
+      "extension": "styl",
+      "tasks": [
+        {
+          "command": "make stylus"
+        }
+      ]
+    },
+    {
+      "extension": "css",
+      "excludes": ["all.css", "all.min.css"],
+      "tasks": [
+        {
+          "command": "make catcss"
+        },
+        {
+          "command": "make uglifycss"
+        }
+      ]
+    },
+    {
+      "extension": "js",
+      "excludes": ["all.js", "all.min.js"],
+      "tasks": [
+        {
+          "command": "make catjs"
+        },
+        {
+          "command": "make uglifyjs"
+        }
+      ]
+    }
+  ]
+}
+```
