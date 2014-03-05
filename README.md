@@ -1,4 +1,3 @@
-goat
-====
+# goat
 
-File watcher in Golang
+File watcher
