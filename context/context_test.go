@@ -12,7 +12,7 @@ func TestNewContext(t *testing.T) {
 	expectedErrMsg := "open goat.json: no such file or directory"
 	_, err := NewContext(500)
 	if err == nil || err.Error() != expectedErrMsg {
-		t.Errorf("Error (%s) should be returned. %s %s", expectedErrMsg, err, wd)
+		t.Errorf("Error (%s) should be returned.", expectedErrMsg)
 	}
 
 	// When NewConfig returns a context.
