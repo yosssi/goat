@@ -107,7 +107,7 @@ $ goat
 
 Goat launches watcher processes defined on `goat.json` file.
 
-Default interval time of each watcher's execution process is 500 ms. You can change this interval time by specifying -i flag. The following example shows a command which sets an interval time to 1000 ms:
+Default interval time of each watcher's file check loop is 500 ms. You can change this interval time by specifying -i flag. The following example shows a command which sets an interval time to 1000 ms:
 
 ```sh
 $ goat -i 1000
