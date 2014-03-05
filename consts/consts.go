@@ -1,6 +1,7 @@
 package consts
 
 const (
-	ConfigFile            = "goat.json"
-	CommandsChannelBuffer = 64
+	ConfigFile        = "goat.json"
+	JobsChannelBuffer = 64
+	DefaultInterval   = 500
 )
