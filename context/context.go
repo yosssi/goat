@@ -1,11 +1,6 @@
 package context
 
-import (
-	"flag"
-	"os"
-
-	"github.com/yosssi/goat/consts"
-)
+import "os"
 
 // Context represents a context of a process.
 type Context struct {
@@ -15,7 +10,7 @@ type Context struct {
 }
 
 // NewContext generates a Context and returns it.
-func NewContext() (*Context, error) {
+func NewContext(interval int) (*Context, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -24,7 +19,5 @@ func NewContext() (*Context, error) {
 	if err != nil {
 		return nil, err
 	}
-	interval := flag.Int("i", consts.DefaultInterval, "An interval(ms) of a watchers' file check loop")
-	flag.Parse()
-	return &Context{Wd: wd, Config: config, Interval: *interval}, nil
+	return &Context{Wd: wd, Config: config, Interval: interval}, nil
 }

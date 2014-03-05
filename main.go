@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os/exec"
@@ -15,7 +16,10 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	ctx, err := context.NewContext()
+	interval := flag.Int("i", consts.DefaultInterval, "An interval(ms) of a watchers' file check loop")
+	flag.Parse()
+
+	ctx, err := context.NewContext(*interval)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,20 +42,31 @@ func handleJobs(jobsC <-chan context.Job) {
 	for job := range jobsC {
 		watcher := job.Watcher
 		watcher.Printf("%s", job.Message)
-		for _, command := range watcher.Commands {
+		for _, task := range watcher.Tasks {
+			command := task.Command
 			tokens := strings.Split(command, " ")
 			name := tokens[0]
 			var cmdArg []string
 			if len(tokens) > 1 {
 				cmdArg = tokens[1:]
 			}
-			watcher.Printf("execute: %s", command)
-			bytes, err := exec.Command(name, cmdArg...).Output()
-			if len(bytes) > 0 {
-				fmt.Print(string(bytes))
-			}
-			if err != nil {
-				watcher.Printf("An error occurred: %s", err.Error())
+			cmd := exec.Command(name, cmdArg...)
+			if task.Nowait {
+				watcher.Printf("execute(nowait): %s", command)
+				if err := cmd.Start(); err != nil {
+					watcher.Printf("An error occurred: %s", err.Error())
+				} else {
+					watcher.Printf("end(nowait): %s", command)
+				}
+			} else {
+				watcher.Printf("execute: %s", command)
+				bytes, err := cmd.Output()
+				if err != nil {
+					watcher.Printf("An error occurred: %s", err.Error())
+				} else {
+					fmt.Print(string(bytes))
+					watcher.Printf("end: %s", command)
+				}
 			}
 		}
 	}

@@ -13,7 +13,7 @@ import (
 type Watcher struct {
 	Extension string   `json:"extension"`
 	Excludes  []string `json:"excludes"`
-	Commands  []string `json:"commands"`
+	Tasks     []Task   `json:"tasks"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
 }
@@ -23,6 +23,7 @@ func (w *Watcher) Launch(ctx *Context, jobsC chan<- Job) {
 	w.JobsC = jobsC
 	w.Targets = make(map[string]map[string]os.FileInfo)
 	w.readDir(ctx.Wd, true)
+	w.Printf("%s", "Watching...")
 	for {
 		time.Sleep(time.Duration(ctx.Interval) * time.Millisecond)
 		w.readDir(ctx.Wd, false)
