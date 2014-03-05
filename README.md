@@ -31,7 +31,7 @@ $ go get github.com/yosssi/goat/...
 
 ## Configuration file
 
-To run goat, you have to create a configuration file named `goat.json` on in your project root directory. This file looks like the following:
+To run goat, you have to create a configuration file named `goat.json` in your project root directory. This file looks like the following:
 
 ```json
 {
