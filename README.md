@@ -35,12 +35,24 @@ To run goat, you have to create a configuration file named `goat.json` in your p
 
 ```json
 {
+  "init_tasks": [
+    {
+      "command": "make stop"
+    },
+    {
+      "command": "make run",
+      "nowait": true
+    }
+  ],
   "watchers": [
     {
       "extension": "go",
       "tasks": [
         {
-          "command": "make rerun",
+          "command": "make stop"
+        },
+        {
+          "command": "make run",
           "nowait": true
         }
       ]
@@ -80,18 +92,18 @@ To run goat, you have to create a configuration file named `goat.json` in your p
   ]
 }
 ```
-
+* `init_tasks` defines an array of initial tasks. This definition is optional. Each task definition has the following properties:
+  * `command` (required)
+  * `nowait` (optional)
+* `command` defines a command which is executed when one of the target files is created, updated or removed.
+* `nowait` defines whether Goat waits the completion of the command or not.
 * `watchers` defines an array of file watchers. Each watcher definition has the following properties:
   * `extension` (required)
   * `tasks` (required)
   * `excludes` (optional)
 * `extension` defines target file's extension. Goat watches all files which have this extension in and under your project root directory.
-* `tasks` defines an array of tasks. Each task definition has the following properties:
-  * `command` (required)
-  * `nowait` (optional)
+* `tasks` defines an array of tasks.
 * `excludes` defines an array of file names which is out of watching range.
-* `command` defines a command which is executed when one of the target files is created, updated or removed.
-* `nowait` defines whether Goat waits the completion of the command or not.
 
 ## Execution
 
