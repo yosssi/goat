@@ -9,7 +9,8 @@ import (
 
 // Config represents a configuration of a process.
 type Config struct {
-	Watchers []*Watcher `json:"watchers"`
+	InitTasks []*Task    `json:"init_tasks"`
+	Watchers  []*Watcher `json:"watchers"`
 }
 
 // NewConfig parses a JSON file, generates a Config and returns it.

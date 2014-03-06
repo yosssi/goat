@@ -13,7 +13,7 @@ import (
 type Watcher struct {
 	Extension string   `json:"extension"`
 	Excludes  []string `json:"excludes"`
-	Tasks     []Task   `json:"tasks"`
+	Tasks     []*Task  `json:"tasks"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
 }
