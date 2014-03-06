@@ -1,10 +1,10 @@
 package context
 
 import (
+	"encoding/json"
 	"io/ioutil"
 
 	"github.com/yosssi/goat/consts"
-	"launchpad.net/goyaml"
 )
 
 // Config represents a configuration of a process.
@@ -20,7 +20,7 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 	config := &Config{}
-	if err := goyaml.Unmarshal(bytes, config); err != nil {
+	if err := json.Unmarshal(bytes, config); err != nil {
 		return nil, err
 	}
 	return config, nil

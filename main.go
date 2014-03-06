@@ -55,6 +55,7 @@ func handleJobs(jobsC <-chan context.Job) {
 	for job := range jobsC {
 		watcher := job.Watcher
 		watcher.Printf("%s", job.Message)
+		executeTasks(watcher.Tasks, watcher)
 	}
 }
 

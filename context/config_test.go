@@ -13,8 +13,8 @@ func TestNewConfig(t *testing.T) {
 		t.Errorf("Error (%s) should be returned.", expectedErrMsg)
 	}
 
-	// When goyaml.Unmarshal returns an error.
-	expectedErrMsg = "YAML error: line 1: did not find expected node content"
+	// When json.Unmarshal returns an error.
+	expectedErrMsg = "unexpected end of JSON input"
 	os.Chdir(os.Getenv("GOPATH") + "/src/github.com/yosssi/goat/test/context/TestNewConfig001")
 	_, err = NewConfig()
 	if err == nil || err.Error() != expectedErrMsg {
