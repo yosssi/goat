@@ -124,3 +124,4 @@ Default interval time of each watcher's file check loop is 500 ms. You can chang
 ```sh
 $ goat -i 1000
 ```
+
