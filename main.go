@@ -71,6 +71,8 @@ func executeTasks(tasks []*context.Task, watcher *context.Watcher) {
 		}
 		cmd := exec.Command(name, cmdArg...)
 		if task.Nowait {
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
 			printf(watcher, "execute(nowait): %s", command)
 			if err := cmd.Start(); err != nil {
 				printf(watcher, "An error occurred: %s", err.Error())
