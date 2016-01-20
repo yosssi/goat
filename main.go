@@ -79,9 +79,9 @@ func executeTasks(tasks []*context.Task, watcher *context.Watcher) {
 			}
 		} else {
 			printf(watcher, "execute: %s", command)
-			bytes, err := cmd.Output()
+			bytes, err := cmd.CombinedOutput()
 			if err != nil {
-				printf(watcher, "An error occurred: %s", err.Error())
+				printf(watcher, "An error occurred: %s", cmd.Stderr)
 			} else {
 				fmt.Print(string(bytes))
 				printf(watcher, "end: %s", command)
