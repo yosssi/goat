@@ -36,7 +36,6 @@ func TestNewConfig(t *testing.T) {
 	os.Chdir(os.Getenv("GOPATH") + "/src/github.com/yosssi/goat/test/context/TestNewConfig003")
 	_, err = NewConfig()
 	if err == nil || err.Error() != expectedErrMsg {
-		t.Errorf("Error returned (%s)", err.Error())
 		t.Errorf("Error (%s) should be returned.", expectedErrMsg)
 	}
 
