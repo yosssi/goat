@@ -1,0 +1,19 @@
+# {
+#   "watchers": [
+#     {
+#       "extension": "go",
+#       "tasks": [
+#         {
+#           "command": "make rerun",
+#           "nowait": true
+#         }
+#       ]
+#     }
+#   ]
+# }
+
+watchers:
+  - extension: go
+    tasks:
+      - command: make rerun
+        nowait: true
