@@ -1,7 +1,6 @@
 package context
 
 import (
-	"fmt"
 	"encoding/json"
 	"io/ioutil"
 
@@ -24,7 +23,6 @@ func NewConfig() (*Config, error) {
 			return nil, err
 		}
 
-		fmt.Printf("Found %s\n", consts.YAMLConfigFile)
 		config := &Config{}
 		if err := yaml.Unmarshal(bytes, config); err != nil {
 			return nil, err
@@ -32,7 +30,6 @@ func NewConfig() (*Config, error) {
 		return config, nil
 	}
 
-	fmt.Printf("Found %s\n", consts.JSONConfigFile)
 	config := &Config{}
 	if err := json.Unmarshal(bytes, config); err != nil {
 		return nil, err

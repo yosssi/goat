@@ -105,7 +105,7 @@ func (w *Watcher) Printf(format string, v ...interface{}) {
 	if w.Directory != "" {
 		watchDir = w.Directory
 	}
-	log.Printf("["+watchDir+" "+w.Extension+" watcher] "+format, v...)
+	log.Printf("[Watcher for "+w.Extension+" files under "+watchDir+"] "+format, v...)
 }
 
 // exclude returns true if the file should be not checked.
