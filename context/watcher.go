@@ -11,9 +11,9 @@ import (
 
 // Watcher represents a file watcher.
 type Watcher struct {
-	Extension string   `json:"extension"`
-	Excludes  []string `json:"excludes"`
-	Tasks     []*Task  `json:"tasks"`
+	Extension string   `json:"extension" yaml:"extension"`
+	Excludes  []string `json:"excludes" yaml:"excludes"`
+	Tasks     []*Task  `json:"tasks" yaml:"tasks"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
 }
