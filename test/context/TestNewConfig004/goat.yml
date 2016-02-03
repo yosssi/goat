@@ -1,0 +1,5 @@
+watchers:
+  - extension: go
+    tasks:
+      - command: make rerun
+        nowait: true

@@ -73,18 +73,18 @@ func executeTasks(tasks []*context.Task, watcher *context.Watcher) {
 		if task.Nowait {
 			printf(watcher, "execute(nowait): %s", command)
 			if err := cmd.Start(); err != nil {
-				printf(watcher, "An error occurred: %s", err.Error())
+				printf(watcher, "An error occurred: %s \n\n", err.Error())
 			} else {
-				printf(watcher, "end(nowait): %s", command)
+				printf(watcher, "end(nowait): %s \n\n", command)
 			}
 		} else {
 			printf(watcher, "execute: %s", command)
 			bytes, err := cmd.CombinedOutput()
 			if err != nil {
-				printf(watcher, "An error occurred: %s", cmd.Stderr)
+				printf(watcher, "An error occurred: %s \n\n", cmd.Stderr)
 			} else {
 				fmt.Print(string(bytes))
-				printf(watcher, "end: %s", command)
+				printf(watcher, "end: %s \n\n", command)
 			}
 		}
 	}
