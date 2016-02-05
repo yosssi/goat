@@ -1,7 +1,7 @@
 package consts
 
 const (
-	Version           = "0.1.0"
+	Version           = "0.2.0"
 	JSONConfigFile    = "goat.json"
 	YAMLConfigFile    = "goat.yml"
 	JobsChannelBuffer = 64
