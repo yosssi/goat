@@ -101,7 +101,7 @@ func (w *Watcher) sendJob(dirname, name, action string) {
 
 // Printf calls log.Printf.
 func (w *Watcher) Printf(format string, v ...interface{}) {
-	watchDir := "Root"
+	watchDir := "project root"
 	if w.Directory != "" {
 		watchDir = w.Directory
 	}

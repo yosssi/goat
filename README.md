@@ -31,7 +31,9 @@ $ go get github.com/yosssi/goat/...
 
 ## Configuration file
 
-To run goat, you have to create a configuration file named `goat.json` in your project root directory. This file looks like the following:
+To run goat, you have to create a configuration file named `goat.json` or `goat.yml` in your project root directory.
+
+The JSON file looks like the following:
 
 ```json
 {
@@ -79,6 +81,7 @@ To run goat, you have to create a configuration file named `goat.json` in your p
     },
     {
       "extension": "js",
+      "directory": "test",
       "excludes": ["all.js", "all.min.js"],
       "tasks": [
         {
@@ -92,6 +95,45 @@ To run goat, you have to create a configuration file named `goat.json` in your p
   ]
 }
 ```
+
+
+The equivalent YAML file looks like the following:
+```yaml
+init_tasks:
+ - command: "make stop"
+ - command: "make run"
+   nowait: true
+
+
+watchers:
+ - extension: go
+   tasks:
+   - command: "make stop"
+   - command: "make run"
+     nowait: true
+
+ - extension: styl
+   tasks:
+   - command: "make stylus"
+
+ - extension: css
+   excludes:
+   - "all.css"
+   - "all.min.css"
+  tasks:
+   - command: "make catcss"
+   - command: "make uglifycss"
+
+ - extension: js
+   directory: test
+   excludes:
+   - "all.js"
+   - "all.min.js"
+  tasks:
+   - command: "make catjs"
+   - command: "make uglifyjs"
+```
+
 * `init_tasks` defines an array of initial tasks. This definition is optional. Each task definition has the following properties:
   * `command` (required)
   * `nowait` (optional)
@@ -101,27 +143,28 @@ To run goat, you have to create a configuration file named `goat.json` in your p
   * `extension` (required)
   * `tasks` (required)
   * `excludes` (optional)
+  * `directory` (optional)
 * `extension` defines target file's extension. Goat watches all files which have this extension in and under your project root directory.
 * `tasks` defines an array of tasks.
 * `excludes` defines an array of file names which is out of watching range.
+* `directory` defines the subdirectory. Goat watches all files which have the specified extension in and under this subdirectory under your project root directory. Defaults to your project root directory, if not specified.
 
 ## Execution
 
-On the your project root directory which has `goat.json` file, execute the following command:
+On the your project root directory which has `goat.json` or `goat.yml` file, execute the following command:
 
 ```sh
 $ goat
-2014/03/06 01:22:04 [go wathcer] Watching...
-2014/03/06 01:22:04 [js wathcer] Watching...
-2014/03/06 01:22:04 [css wathcer] Watching...
-2014/03/06 01:22:04 [styl wathcer] Watching...
+2014/03/06 01:22:04 [Watcher for go files under project root] Watching...
+2014/03/06 01:22:04 [Watcher for js files under test] Watching...
+2014/03/06 01:22:04 [Watcher for css files under project root] Watching...
+2014/03/06 01:22:04 [Watcher for styl files under project root] Watching...
 ```
 
-Goat launches watcher processes defined on `goat.json` file.
+Goat launches watcher processes defined on `goat.json` or `goat.yml` file.
 
 Default interval time of each watcher's file check loop is 500 ms. You can change this interval time by specifying -i flag. The following example shows a command which sets the interval time to 1000 ms:
 
 ```sh
 $ goat -i 1000
 ```
-
