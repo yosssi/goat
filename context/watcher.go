@@ -11,9 +11,10 @@ import (
 
 // Watcher represents a file watcher.
 type Watcher struct {
-	Extension string   `json:"extension"`
-	Excludes  []string `json:"excludes"`
-	Tasks     []*Task  `json:"tasks"`
+	Extension string   `json:"extension" yaml:"extension"`
+	Directory string   `json:"directory" yaml:"directory"`
+	Excludes  []string `json:"excludes" yaml:"excludes"`
+	Tasks     []*Task  `json:"tasks" yaml:"tasks"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
 }
@@ -22,11 +23,15 @@ type Watcher struct {
 func (w *Watcher) Launch(ctx *Context, jobsC chan<- Job) {
 	w.JobsC = jobsC
 	w.Targets = make(map[string]map[string]os.FileInfo)
-	w.readDir(ctx.Wd, true)
+	watchDir := ctx.Wd
+	if w.Directory != "" {
+		watchDir = watchDir+"/"+w.Directory
+	}
+	w.readDir(watchDir, true)
 	w.Printf("%s", "Watching...")
 	for {
 		time.Sleep(time.Duration(ctx.Interval) * time.Millisecond)
-		w.readDir(ctx.Wd, false)
+		w.readDir(watchDir, false)
 	}
 }
 
@@ -96,7 +101,11 @@ func (w *Watcher) sendJob(dirname, name, action string) {
 
 // Printf calls log.Printf.
 func (w *Watcher) Printf(format string, v ...interface{}) {
-	log.Printf("["+w.Extension+" watcher] "+format, v...)
+	watchDir := "Root"
+	if w.Directory != "" {
+		watchDir = w.Directory
+	}
+	log.Printf("[Watcher for "+w.Extension+" files under "+watchDir+"] "+format, v...)
 }
 
 // exclude returns true if the file should be not checked.
