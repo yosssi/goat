@@ -1,15 +1,9 @@
 build:
 	rm -rf ./artifacts
 	mkdir ./artifacts
-	mkdir ./artifacts/linux_amd64
-	mkdir ./artifacts/linux_386
-	mkdir ./artifacts/darwin_amd64
-	mkdir ./artifacts/darwin_386
-	mkdir ./artifacts/windows_amd64
-	mkdir ./artifacts/windows_386
-	GOOS=linux GOARCH=amd64 go build -o ./artifacts/linux_amd64/goat
-	GOOS=linux GOARCH=386 go build -o ./artifacts/linux_386/goat
-	GOOS=darwin GOARCH=amd64 go build -o ./artifacts/darwin_amd64/goat
-	GOOS=darwin GOARCH=386 go build -o ./artifacts/darwin_386/goat
-	GOOS=windows GOARCH=amd64 go build -o ./artifacts/windows_amd64/goat.exe
-	GOOS=windows GOARCH=386 go build -o ./artifacts/windows_386/goat.exe
+	GOOS=linux GOARCH=amd64 go build -o ./artifacts/goat-linux-amd64
+	GOOS=linux GOARCH=386 go build -o ./artifacts/goat-linux-386
+	GOOS=darwin GOARCH=amd64 go build -o ./artifacts/goat-darwin-amd64
+	GOOS=darwin GOARCH=386 go build -o ./artifacts/goat-darwin-386
+	GOOS=windows GOARCH=amd64 go build -o ./artifacts/goat-windows-amd64.exe
+	GOOS=windows GOARCH=386 go build -o ./artifacts/goat-windows-386.exe
