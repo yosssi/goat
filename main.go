@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/yosssi/goat/config"
 	"github.com/yosssi/goat/consts"
 	"github.com/yosssi/goat/context"
 )
@@ -18,8 +19,17 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	version := flag.Bool("v", false, "Show Goat version")
+	configFile := flag.String("c", "", "Show Goat version")
 	interval := flag.Int("i", consts.DefaultInterval, "An interval(ms) of a watchers' file check loop")
 	flag.Parse()
+
+	if *configFile != "" {
+		if strings.HasSuffix(*configFile, "yml") {
+			config.YAMLConfigFile = *configFile
+		} else if strings.HasSuffix(*configFile, "json") {
+			config.JSONConfigFile = *configFile
+		}
+	}
 
 	if *version {
 		fmt.Printf("Goat %s\n", consts.Version)

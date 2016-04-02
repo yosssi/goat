@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/yosssi/goat/consts"
+	"github.com/yosssi/goat/config"
 	"gopkg.in/yaml.v2"
 )
 
@@ -16,9 +16,9 @@ type Config struct {
 
 // NewConfig parses a JSON file, generates a Config and returns it.
 func NewConfig() (*Config, error) {
-	bytes, err := ioutil.ReadFile(consts.JSONConfigFile)
+	bytes, err := ioutil.ReadFile(config.JSONConfigFile)
 	if err != nil {
-		bytes, err = ioutil.ReadFile(consts.YAMLConfigFile)
+		bytes, err = ioutil.ReadFile(config.YAMLConfigFile)
 		if err != nil {
 			return nil, err
 		}
