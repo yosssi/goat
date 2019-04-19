@@ -25,7 +25,7 @@ func (w *Watcher) Launch(ctx *Context, jobsC chan<- Job) {
 	w.Targets = make(map[string]map[string]os.FileInfo)
 	watchDir := ctx.Wd
 	if w.Directory != "" {
-		watchDir = watchDir+"/"+w.Directory
+		watchDir = watchDir + "/" + w.Directory
 	}
 	w.readDir(watchDir, true)
 	w.Printf("%s", "Watching...")
@@ -37,6 +37,9 @@ func (w *Watcher) Launch(ctx *Context, jobsC chan<- Job) {
 
 // readDir reads the directory named by dirname.
 func (w *Watcher) readDir(dirname string, init bool) error {
+	if w.excludeDir(dirname) {
+		return nil
+	}
 	fileInfos, err := ioutil.ReadDir(dirname)
 	if err != nil {
 		return err
@@ -112,6 +115,17 @@ func (w *Watcher) Printf(format string, v ...interface{}) {
 func (w *Watcher) exclude(filename string) bool {
 	for _, excludeFilename := range w.Excludes {
 		if filename == excludeFilename {
+			return true
+		}
+	}
+	return false
+}
+
+// excludeDir returns true if the dir should be not watched.
+func (w *Watcher) excludeDir(dirname string) bool {
+	for _, excludeFilename := range w.Excludes {
+		excludeFilename = strings.TrimRight(excludeFilename, "*/")
+		if strings.Contains(dirname, excludeFilename) {
 			return true
 		}
 	}
