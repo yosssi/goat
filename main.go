@@ -19,12 +19,12 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	version := flag.Bool("v", false, "Show Goat version")
-	configFile := flag.String("c", "", "Show Goat version")
+	configFile := flag.String("c", "", "Specify Goat configuration file")
 	interval := flag.Int("i", consts.DefaultInterval, "An interval(ms) of a watchers' file check loop")
 	flag.Parse()
 
 	if *configFile != "" {
-		if strings.HasSuffix(*configFile, "yml") {
+		if strings.HasSuffix(*configFile, "yml") || strings.HasSuffix(*configFile, "yaml") {
 			config.YAMLConfigFile = *configFile
 		} else if strings.HasSuffix(*configFile, "json") {
 			config.JSONConfigFile = *configFile
