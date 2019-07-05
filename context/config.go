@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/yosssi/goat/config"
 	"gopkg.in/yaml.v2"
+
+	"github.com/yosssi/goat/config"
 )
 
 // Config represents a configuration of a process.

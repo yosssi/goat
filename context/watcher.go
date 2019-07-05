@@ -5,16 +5,23 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
 
+// Exclude check specific exclude type and apply respective match algorithm.
+type Exclude struct {
+	Pattern   string `json:"pattern" yaml:"pattern"`
+	Algorithm string `json:"algorithm" yaml:"algorithm"`
+}
+
 // Watcher represents a file watcher.
 type Watcher struct {
-	Extension string   `json:"extension" yaml:"extension"`
-	Directory string   `json:"directory" yaml:"directory"`
-	Excludes  []string `json:"excludes" yaml:"excludes"`
-	Tasks     []*Task  `json:"tasks" yaml:"tasks"`
+	Extension string    `json:"extension" yaml:"extension"`
+	Directory string    `json:"directory" yaml:"directory"`
+	Excludes  []Exclude `json:"excludes" yaml:"excludes"`
+	Tasks     []*Task   `json:"tasks" yaml:"tasks"`
 	JobsC     chan<- Job
 	Targets   map[string]map[string]os.FileInfo
 }
@@ -113,20 +120,46 @@ func (w *Watcher) Printf(format string, v ...interface{}) {
 
 // exclude returns true if the file should be not checked.
 func (w *Watcher) exclude(filename string) bool {
-	for _, excludeFilename := range w.Excludes {
-		if filename == excludeFilename {
+	for _, excl := range w.Excludes {
+		if w.excludeMatch(filename, &excl) {
 			return true
 		}
 	}
 	return false
 }
 
+// excludeMatch
+func (w *Watcher) excludeMatch(filename string, excl *Exclude) bool {
+	if excl == nil || filename == "" {
+		return false
+	}
+	switch excl.Algorithm {
+	case "suffix":
+		return strings.HasSuffix(filename, excl.Pattern)
+	case "prefix":
+		return strings.HasPrefix(filename, excl.Pattern)
+	case "regexp":
+		match, err := regexp.Match(excl.Pattern, []byte(filename))
+		if err != nil {
+			return false
+		}
+		return match
+	default:
+		return filename == excl.Pattern
+	}
+}
+
 // excludeDir returns true if the dir should be not watched.
 func (w *Watcher) excludeDir(dirname string) bool {
-	for _, excludeFilename := range w.Excludes {
-		excludeFilename = strings.TrimRight(excludeFilename, "*/")
-		if strings.Contains(dirname, excludeFilename) {
-			return true
+	for _, excl := range w.Excludes {
+		switch excl.Algorithm {
+		case "suffix", "prefix", "regexp":
+			return false
+		default:
+			excludeFilename := strings.TrimRight(excl.Pattern, "*/")
+			if strings.Contains(dirname, excludeFilename) {
+				return true
+			}
 		}
 	}
 	return false

@@ -69,7 +69,7 @@ The JSON file looks like the following:
     },
     {
       "extension": "css",
-      "excludes": ["all.css", "all.min.css"],
+      "excludes": [{"pattern": "all.css", "algorithm": "exact"}, {"pattern": "min.css", "algorithm": "suffix"}],
       "tasks": [
         {
           "command": "make catcss"
@@ -82,7 +82,7 @@ The JSON file looks like the following:
     {
       "extension": "js",
       "directory": "test",
-      "excludes": ["all.js", "all.min.js"],
+      "excludes": [{"pattern": "all.js", "algorithm": "exact"}, {"pattern": "min.js", "algorithm": "suffix"}],
       "tasks": [
         {
           "command": "make catjs"
@@ -118,8 +118,10 @@ watchers:
 
  - extension: css
    excludes:
-   - "all.css"
-   - "all.min.css"
+   - pattern: "all.css"
+     algorithm: "exact"
+   - pattern: "min.css"
+     algorithm: "suffix"
   tasks:
    - command: "make catcss"
    - command: "make uglifycss"
@@ -127,8 +129,10 @@ watchers:
  - extension: js
    directory: test
    excludes:
-   - "all.js"
-   - "all.min.js"
+   - pattern: "all.js"
+     algorithm: "exact"
+   - pattern: "min.js"
+     algorithm: "suffix"
   tasks:
    - command: "make catjs"
    - command: "make uglifyjs"
@@ -143,6 +147,12 @@ watchers:
   * `extension` (required)
   * `tasks` (required)
   * `excludes` (optional)
+    * `pattern` defile filename or filename pattern which matched with the respective algorithm.
+    * `algorithm` (optional, default is `exact`)
+      * `exact` exclude the file matched exactly
+      * `regexp` exclude the file(s) matched with regexp pattern.
+      * `suffix` exclude the file(s) ends with suffix.
+      * `prefix` exclude the file(s) starts with prefix.
   * `directory` (optional)
 * `extension` defines target file's extension. Goat watches all files which have this extension in and under your project root directory.
 * `tasks` defines an array of tasks.
