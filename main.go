@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"strings"
 
 	"github.com/yosssi/goat/config"
 	"github.com/yosssi/goat/consts"
@@ -73,13 +72,7 @@ func handleJobs(jobsC <-chan context.Job) {
 func executeTasks(tasks []*context.Task, watcher *context.Watcher) {
 	for _, task := range tasks {
 		command := task.Command
-		tokens := strings.Split(command, " ")
-		name := tokens[0]
-		var cmdArg []string
-		if len(tokens) > 1 {
-			cmdArg = tokens[1:]
-		}
-		cmd := exec.Command(name, cmdArg...)
+		cmd := exec.Command("/bin/bash", "-c", command)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if task.Nowait {
